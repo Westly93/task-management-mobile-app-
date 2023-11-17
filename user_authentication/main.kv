@@ -1,0 +1,211 @@
+<DrawerClickableItem@MDNavigationDrawerItem>
+    focus_color: "#e7e4c0"
+    text_color: "#4a4939"
+    icon_color: "#4a4939"
+    ripple_color: "#c5bdd2"
+    selected_color: "#0c6c4d"
+
+
+<DrawerLabelItem@MDNavigationDrawerItem>
+    text_color: "#4a4939"
+    icon_color: "#4a4939"
+    focus_behavior: False
+    selected_color: "#4a4939"
+    _no_ripple_effect: True
+
+<ContentNavigationDrawer>
+    
+    MDNavigationDrawerMenu:
+
+        MDNavigationDrawerHeader:
+            title: "myMSU"
+            title_color: "#4a4939"
+            text: "Welcome to MSU"
+            spacing: "4dp"
+            padding: "12dp", 0, 0, "56dp"
+
+        DrawerClickableItem:
+            icon: "home"
+            text_right_color: "#4a4939"
+            text: "Home"
+            on_release: 
+                root.nav_drawer.set_state("close")
+                root.screen_manager.current= "home"
+        DrawerClickableItem:
+            icon: "login"
+            text_right_color: "#4a4939"
+            text: "Sign In"
+            on_release: 
+                root.nav_drawer.set_state("close")
+                root.screen_manager.current= "login"
+
+        DrawerClickableItem:
+            icon: "account-plus"
+            text: "Register"
+            on_release: 
+                root.nav_drawer.set_state("close")
+                root.screen_manager.current= "register"
+
+        DrawerClickableItem:
+            icon: "logout"
+            text: "Logout"
+            disabled: True if root.access_denied else False
+            on_release: 
+                root.nav_drawer.set_state("close")
+                root.screen_manager.current= "logout"
+<HomeScreen>
+    MDScreen:
+        name: "home"
+        MDLabel:
+            text: "Home Screen" 
+            pos_hint: {"center_x": .5, "center_y": .5}
+
+<LogoutScreen>
+    MDScreen:
+        MDLabel:
+            text: "Are you sure you want to logout?"
+            pos_hint: {"center_x": .5, "center_y": .5}
+<LoginScreen>
+    MDScreen:
+        name: "login"
+        
+        MDLabel:
+            text: "Welcome back"
+            pos_hint: {"center_y": .72}
+            halign: "center"
+            font_size: '30dp'
+            color: "#03dffc"
+        MDTextField:
+            id: login_username
+            hint_text: "Username"
+            pos_hint: {"center_y": 0.65, "center_x": .5}
+            icon_right: "account"
+            font_size: "20dp"
+            required: True
+            size_hint_x: .85
+        MDTextField:
+            id: login_password
+            hint_text: "Password"
+            password: True
+            pos_hint:{"center_y": 0.58, "center_x": .5}
+            font_size: "20dp"
+            icon_right: "eye-off"
+            required: True
+            size_hint_x: .85
+
+        MDBoxLayout:
+            size_hint_x: .85
+            height: "30dp"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            MDCheckbox:
+                size_hint: None, None
+                size: "48dp", "48dp"
+                halign: "left"
+                pos_hint: {'center_x': .5, 'center_y': .5}
+
+            MDLabel:
+                text: "[ref=Show Password] Show Password [/ref]"
+                markup: True
+                pos_hint: {'center_x': .5, 'center_y': .5}
+        MDRectangleFlatIconButton:
+            icon: 'login'
+            text: "Login"
+            pos_hint: {"center_y": 0.42, "center_x": .5}
+            size_hint_x: 0.85
+            on_release:
+                app.login(login_username, login_password)
+<RegistrationScreen>
+    MDScreen:
+        name:"register"
+        MDLabel:
+            text: "Join Us Today"
+            pos_hint: {"center_y": .8}
+            halign: "center"
+            font_size: '30dp'
+            color: "#03dffc"
+        MDTextField:
+            id: register_username
+            hint_text: "Username"
+            pos_hint: {"center_y": 0.7, "center_x": .5}
+            font_size: "20dp"
+            required: True
+            size_hint_x: .85
+        MDTextField:
+            id: email
+            hint_text: "Email"
+            pos_hint: {"center_y": 0.6, "center_x": .5}
+            font_size: "20dp"
+            required: True
+            size_hint_x: .85
+        MDTextField:
+            id: firstname
+            hint_text: "First Name"
+            pos_hint: {"center_y": 0.5, "center_x": .5}
+            required: True
+            font_size: "20dp"
+            size_hint_x: .85
+        MDTextField:
+            id: lastname
+            hint_text: "Last Name"
+            required: True
+            pos_hint: {"center_y": 0.4, "center_x": .5}
+            font_size: "20dp"
+            size_hint_x: .85
+        MDTextField:
+            id: register_password
+            hint_text: "Password"
+            required: True
+            password: True
+            pos_hint:{"center_y": 0.3, "center_x": .5}
+            font_size: "20dp"
+            icon_right: "eye-off"
+            size_hint_x: .85
+        MDTextField:
+            id: confirm_password
+            hint_text: "Confirm Password"
+            required: True
+            password: True
+            pos_hint:{"center_y": 0.2, "center_x": .5}
+            font_size: "20dp"
+            icon_right: "eye-off"
+            size_hint_x: .85
+        MDRectangleFlatIconButton:
+            text: "Register"
+            icon:"account-plus"
+            pos_hint: {"center_y": 0.1, "center_x": .5}
+            size_hint_x: 0.85
+            on_release: app.register(register_username, email, firstname, lastname, register_password, confirm_password)
+        
+MDScreen:
+
+    MDScreen:
+        MDTopAppBar:
+            title: "Navigation Drawer"
+            elevation: 4
+            pos_hint: {"top": 1}
+            md_bg_color: "#e7e4c0"
+            specific_text_color: "#4a4939"
+            left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+
+        MDNavigationLayout:
+            MDScreenManager:
+                id: screen_manager
+                HomeScreen:
+                    name: "home"
+                LoginScreen:
+                    name: "login"
+                LogoutScreen:
+                    name: "logout"
+                RegistrationScreen:
+                    name: "register"
+                
+
+        MDNavigationDrawer:
+            id: nav_drawer
+            radius: (0, 16, 16, 0)
+            ContentNavigationDrawer:
+                nav_drawer: nav_drawer
+                screen_manager: screen_manager
+
+
+            
